@@ -4,8 +4,6 @@ import './style.scss';
 
 import MenuItem from '../menu-item/MenuItem';
 
-// const Directory = ({ children }) => <div className='directory-menu'>{children}</div>;
-
 class Directory extends Component {
   //
 
@@ -60,8 +58,8 @@ class Directory extends Component {
 
     return (
       <div className='directory-menu'>
-        {sections.map(({ id, ...sectionProps }) => (
-          <MenuItem key={id} {...sectionProps} />
+        {sections.map(({ title, imageUrl, size, id, linkUrl }) => (
+          <MenuItem key={id} title={title} image={imageUrl} size={size} linkUrl={linkUrl} />
         ))}
       </div>
     );
