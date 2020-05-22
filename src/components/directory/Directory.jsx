@@ -7,8 +7,8 @@ import MenuItem from '../menu-item/MenuItem';
 class Directory extends Component {
   //
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       sections: [
