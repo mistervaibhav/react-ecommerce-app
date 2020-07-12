@@ -1,3 +1,5 @@
+// REALTIME DATABASE
+
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/firebase-auth';
