@@ -10,7 +10,8 @@ import Auth from '../pages/auth/Auth';
 // COMPONENTS
 import Header from '../components/header/Header';
 // FIREBASE UTILS
-import { auth } from '../firebase/firebase';
+import { auth } from '../firebase/config';
+import { createUserProfileDocument } from '../firebase/auth';
 
 class App extends Component {
   constructor() {
@@ -24,7 +25,24 @@ class App extends Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+      // console.log(user.displayName);
+
+      if (user) {
+        const userRef = await createUserProfileDocument(user);
+
+        userRef.onSnapshot((snapShot) => {
+          // console.log(snapShot.data());
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+
+          // console.log(this.state);
+        });
+      }
       this.setState({
         currentUser: user,
       });
@@ -43,7 +61,7 @@ class App extends Component {
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
           <Route exact path='/auth' component={Auth} />
-          <Route exact path component />
+          {/* <Route exact path component /> */}
         </Switch>
       </BrowserRouter>
     );

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
 import FormInput from '../form-input/FormInput';
-import Button from '../custom-botton/Button';
+import Button from '../custom-button/Button';
 
-import { signInWithGoogle } from '../../firebase/firebase';
+import { auth } from '../../firebase/config';
+import { signInWithGoogle } from '../../firebase/auth';
 
 import './style.scss';
 
@@ -17,34 +18,49 @@ class SignIn extends Component {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(this.state);
-    this.setState({
-      email: '',
-      password: '',
-    });
+    // console.log(this.state);
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: '', password: '' });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleChange = (e) => {
-    const { value, name } = e.target;
     this.setState({
-      [name]: value,
+      [e.target.name]: e.target.value,
     });
   };
 
   render() {
+    const { email, password } = this.state;
+
     return (
-      <div className='sign-in'>
+      <div id='sign-in'>
         <h2>I already have an account</h2>
         <span>Sign in with your email & password</span>
 
         <form onSubmit={this.handleSubmit}>
-          <FormInput handleChange={this.handleChange} value={this.state.email} label='email' />
           <FormInput
+            type='email'
+            name='email'
             handleChange={this.handleChange}
-            value={this.state.password}
-            label='password'
+            value={email}
+            label='Email'
+            required
+          />
+          <FormInput
+            type='password'
+            name='password'
+            handleChange={this.handleChange}
+            value={password}
+            label='Password'
+            required
           />
           <div className='button-group'>
             <Button type='submit'>Sign In</Button>
