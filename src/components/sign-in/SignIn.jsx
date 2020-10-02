@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import FormInput from '../form-input/FormInput';
 import Button from '../custom-button/Button';
@@ -27,7 +29,8 @@ class SignIn extends Component {
       await auth.signInWithEmailAndPassword(email, password);
       this.setState({ email: '', password: '' });
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
+      // console.log(error);
     }
   };
 
@@ -67,6 +70,7 @@ class SignIn extends Component {
             <Button onClick={signInWithGoogle}>Sign In with Google</Button>
           </div>
         </form>
+        <ToastContainer />
       </div>
     );
   }
